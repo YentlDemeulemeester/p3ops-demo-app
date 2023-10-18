@@ -1,8 +1,0 @@
-version: "3.8"
-services:
-    my-dotnet-app:
-        build:
-            context: .
-            dockerfile: Dockerfile.production # gebruiker de juiste dockerfile, die heb ik .production genoemd
-        ports:
-            - "8080:80" # de juiste poorten instellen waarop die moet draaien.

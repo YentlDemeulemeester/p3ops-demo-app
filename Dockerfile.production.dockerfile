@@ -12,7 +12,6 @@ COPY ./src/Server/publish /app
 
 # Variabelen instellen (SQL moet nog ingesteld worden!)
 ENV DOTNET_ENVIRONMENT=Production
-ENV DOTNET_ConnectionStrings__SqlDatabase=localhost,1433;Database=SportStore;Trusted_Connection=True;
 
 # 
 CMD ["dotnet", "Server.dll"]
