@@ -1,15 +1,16 @@
-# Build Stage
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /src
+
+# Kopieer de .csproj-bestanden naar de container
 COPY *.csproj ./
-RUN dotnet restore "*.csproj"
 
-COPY . .
-RUN dotnet publish "*.csproj" -c Release -o /publish
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish -c Release -o /publish
  
-# Serve Stage
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal as final
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as final-env
 WORKDIR /app
-COPY --from=build /publish .
+COPY --from=build-env /app/publish .
 
-ENTRYPOINT ["dotnet", "SportStore.sln"]
+ENTRYPOINT ["dotnet", "SportStore.dll"]
