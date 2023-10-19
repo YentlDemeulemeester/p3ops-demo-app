@@ -1,20 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
-WORKDIR /app
-
-COPY src/Server/*.csproj src/Server/
-RUN dotnet restore src/Server/Server.csproj
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+WORKDIR /src
+COPY *.csproj ./
+RUN dotnet restore "*.csproj"
 
 COPY . .
-
-RUN dotnet publish src/Server/Server.csproj -c Release -o /app/publish
-
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-
+RUN dotnet publish "*.csproj" -c Release -o /publish
+ 
+# Serve Stage
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal as final
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /publish .
 
-ENV DOTNET_ENVIRONMENT=Production
-ENV DOTNET_ConnectionStrings__SqlDatabase=Server=localhost,1433;Database=SportStore;Trusted_Connection=True;
-
-ENTRYPOINT ["dotnet", "Server.dll"]
+ENTRYPOINT ["dotnet", "SportStore.sln"]
