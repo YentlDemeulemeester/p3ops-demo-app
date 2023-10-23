@@ -1,16 +1,19 @@
 version: '3.8'
 services:
-  sportstore:
+  my-server:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - 8080:80
     environment:
-      - DOTNET_ENVIRONMENT=Production
-      - DOTNET_ConnectionStrings__SqlDatabase=Server=localhost,1433;Database=SportStore;Trusted_Connection=True;
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server
+      MY_APP_DB_CONNECTION: "Server=localhost,1433;Database=SportStore;Trusted_Connection=True;"
+  my-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Devopsg05!
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "mysecretpassword"
+    ports:
+     - "1433:1433"
+
