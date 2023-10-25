@@ -1,40 +1,16 @@
 version: "3.8"
-
-networks:
-    dev:
-        driver: bridge
-
 services:
-    demo-app:
-        image: docker.io/library/demoapp
-        depends_on:
-            - "localhost"
-        container_name: demoapp-services
-        ports:
-            - 8080:80
+    sportstore:
         build:
             context: .
             dockerfile: Dockerfile
+        ports:
+            - "8080:80"
         environment:
-            - DOTNET_ConnectionStrings__SqlDatabase=Server=localhost,1433;Database=SportStore;Trusted_Connection=True;
             - DOTNET_ENVIRONMENT=Production
-        networks:
-            - dev
-
-    localhost:
+            - DOTNET_ConnectionStrings__SqlDatabase=Server=localhost,1433;Database=SportStore;Trusted_Connection=True;
+    sqlserver:
         image: mcr.microsoft.com/mssql/server
-        container_name: app_db
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Devopsg05!
-            - MSSQL_DB=SportStore
-        ports:
-            - "1433:1433"
-        restart: always
-        volumes:
-            - app_data:/var/lib/mssql/data
-        networks:
-            - dev
-
-volumes:
-    app_data:
