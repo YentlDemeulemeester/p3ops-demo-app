@@ -7,7 +7,7 @@ WORKDIR /app
 COPY *.csproj ./
 
 # Restore van de packages
-RUN dotnet restore *.csproj
+RUN dotnet restore "*.csproj"
 
 # Kopieren van de rest van de applicatie naar de container
 COPY . ./
