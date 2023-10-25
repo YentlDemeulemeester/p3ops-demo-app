@@ -4,10 +4,22 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Kopieren van alle code van de root map naar de container
-COPY *.csproj ./
+COPY src/Client/Client.csproj ./src/Client/Client.csproj
+COPY src/Domain/Domain.csproj ./src/Domain/Domain.csproj
+COPY src/Persistence/Persistence.csproj ./src/Persistence/Persistence.csproj
+COPY src/Server/Server.csproj ./src/Server/Server.csproj
+COPY src/Services/Services.csproj ./src/Services/Services.csproj
+COPY src/Shared/Shared.csproj ./src/Shared/Shared.csproj
+COPY tests/Domain.Tests/Domain.Tests.csproj ./tests/Domain.Tests/Domain.Tests.csproj
 
 # Restore van de packages
-RUN dotnet restore "*.csproj"
+RUN dotnet restore src/Client/Client.csproj
+RUN dotnet restore src/Domain/Domain.csproj
+RUN dotnet restore src/Persistence/Persistence.csproj
+RUN dotnet restore src/Server/Server.csproj
+RUN dotnet restore src/Services/Services.csproj
+RUN dotnet restore src/Shared/Shared.csproj
+RUN dotnet restore tests/Domain.Tests/Domain.Tests.csproj
 
 # Kopieren van de rest van de applicatie naar de container
 COPY . ./
