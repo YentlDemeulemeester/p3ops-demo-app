@@ -4,11 +4,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Kopieren van alle code van de root map naar de container
-COPY src/**/*.csproj ./src/
-COPY tests/**/*.csproj ./tests/
+COPY *.csproj ./
 
 # Restore van de packages
-RUN dotnet restore
+RUN dotnet restore *.csproj
 
 # Kopieren van de rest van de applicatie naar de container
 COPY . ./
