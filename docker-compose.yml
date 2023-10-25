@@ -8,7 +8,7 @@ services:
     demo-app:
         image: docker.io/library/demoapp
         depends_on:
-            - "localhost"
+            - "app_db"
         container_name: demoapp-services
         ports:
             - 8080:80
@@ -23,7 +23,7 @@ services:
 
     localhost:
         image: mcr.microsoft.com/mssql/server
-        container_name: localhost
+        container_name: app_db
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=Devopsg05!
