@@ -1,9 +1,11 @@
 version: "3.8"
 services:
     sportstore:
+        image: docker.io/library/sportstoreapp
         build:
             context: .
             dockerfile: Dockerfile
+        container_name: sportstore-services
         ports:
             - "8080:80"
         environment:
