@@ -1,18 +1,24 @@
-# Gebruik het officiële .NET runtime image als basisimage.
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
-
-# werkdirectory van container instellen.
+# Base image voor .NET 6.0
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+# Map aanmaken
 WORKDIR /app
+
+# Kopieren van alle code van de root map naar de container
+COPY *.csproj ./
+# Restore van de packages
+RUN dotnet restore
+
+# Kopieren van de rest van de applicatie naar de container
 COPY . ./
-RUN dotnet publish src/Server/Server.csproj -c Release -o out
+# Builden van de applicatie
+RUN dotnet publish -c Release -o publish
 
-# Maak een copy van de container.
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 as final
-WORKDIR /App
-COPY --from=build-env /App/out .
+# Maken van een final build image
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS final-env
+# Map aanmaken
+WORKDIR /app
+# Kopieren van de vorige container naar de nieuwe container
+COPY --from=build-env /app/publish .
 
-# Variabelen instellen (SQL moet nog ingesteld worden!)
-# ENV DOTNET_ConnectionStrings__SqlDatabase=localhost,1433;Database=SportStore;Trusted_Connection=True; > verplaatst naar compose
-
+# App starten
 ENTRYPOINT ["dotnet", "Server.dll"]
-
