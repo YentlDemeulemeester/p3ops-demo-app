@@ -5,7 +5,6 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-            target: final-env
         container_name: sportstore-services
         ports:
             - "8080:80"
