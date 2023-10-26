@@ -1,21 +1,18 @@
 version: "3.8"
 services:
-    sportstore:
-        image: docker.io/library/sportstoreapp
+    server:
         build:
             context: .
-            dockerfile: Dockerfile
-        container_name: p3ops-demo-app-sportstore-services
+            target: final-env
         ports:
-            - "8080:80"
+            - 8080:80
         environment:
-            - DOTNET_ENVIRONMENT=Production
-            - DOTNET_ConnectionStrings__SqlDatabase=Server=localhost,1433;Database=SportStore;Trusted_Connection=True;
-    sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+            DOTNET_ConnectionStrings__SqlDatabase: "Server=db;Database=myDataBase;User ID=sa;Password=example_123;"
+    db:
+        image: mcr.microsoft.com/mssql/server:2019-latest
         restart: always
         environment:
-            - ACCEPT_EULA=Y
-            - MSSQL_SA_PASSWORD=Devopsg05!
+            ACCEPT_EULA: "Y"
+            MSSQL_SA_PASSWORD: "example_123"
         ports:
             - "1433:1433"
