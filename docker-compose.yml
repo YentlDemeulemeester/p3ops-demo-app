@@ -5,7 +5,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: sportstore-services
+        container_name: p3ops-demo-app-sportstore-services
         ports:
             - "8080:80"
         environment:
