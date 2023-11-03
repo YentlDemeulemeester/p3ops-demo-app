@@ -1,11 +1,10 @@
 version: "3.8"
 services:
-    sportstore:
-        image: docker.io/library/sportstoreapp
+    SportStore:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: p3ops-demo-app-sportstore-services
+        container_name: sportstore_container
         ports:
             - "8080:80"
         environment:
