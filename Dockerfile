@@ -27,9 +27,10 @@ COPY . ./
 RUN dotnet publish -c Release -o publish
 
 # Maken van een final build image
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS final-env
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final-env
 # Map aanmaken
 WORKDIR /app
+EXPOSE 80
 # Kopieren van de vorige container naar de nieuwe container
 COPY --from=build-env /app/publish .
 
